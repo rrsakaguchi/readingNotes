@@ -1,0 +1,322 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+<div class="text-base" x-data="componentData()">
+<ul class="flex gap-3">
+  <li @click="tab = 'tab1'" x-bind:class="{'text-blue-500': tab === 'tab1'}">【ざっくりモード】</li>
+  <li @click="tab = 'tab2'" x-bind:class="{'text-blue-500': tab === 'tab2'}">【きっかりモード】</li>
+  <li @click="tab = 'tab3'" x-bind:class="{'text-blue-500': tab === 'tab3'}">【実験メモモード】</li>
+  <li @click="tab = 'tab4'" x-bind:class="{'text-blue-500': tab === 'tab4'}">【完成モード】</li>
+  <li @click="tab = 'tab5'" x-bind:class="{'text-blue-500': tab === 'tab5'}">【セーブモード】</li>
+</ul>
+
+<div class="mb-3">
+  <hr/>
+</div>
+
+<div>
+  <!-- 【ざっくりモード】 -->
+  <div x-show="tab === 'tab1'" class="">
+      <div class="text-2xl">【ざっくりモード】</div>
+      <div class="grid gap-8">
+          <div class="text-xl">
+              <div>①たぶん重要キーワード・フレーズ記入欄</div>
+              <textarea
+                  x-model="keywordInput"
+                  class="mx-8 border rounded text-gray-700 w-full"
+                  rows="5">
+              </textarea>
+              <button
+                  class="mt-3 ml-1 p-2 border-2 rounded text-pink-500 border-pink-500 hover:text-white hover:bg-pink-500"
+                  @click="addZakkuriItem()">
+                  反映
+              </button>
+          </div>
+
+          <div class="text-xl">
+              <div>②自分的にココ好きかも…！？メモ記入欄</div>
+              <textarea
+                  x-model="suki"
+                  class="mx-8 border rounded text-gray-700 w-full"
+                  rows="5">
+              </textarea>
+          </div>
+
+          <div class="text-xl">
+              <div>③なんでもメモ記入欄</div>
+              <textarea
+                  x-model="nandemo"
+                  class="mx-8 border rounded text-gray-700 w-full"
+                  rows="20">
+              </textarea>
+          </div>
+
+          <div class="text-xl">
+              <div>④カッコいい一文記入欄</div>
+              <div class="grid gap-3">
+                  <input
+                      x-model="itibunpejiInput"
+                      class="mx-8 border rounded text-gray-700 w-1/5">
+                  <textarea
+                      x-model="itibunInput"
+                      class="mx-8 border rounded text-gray-700 w-full"
+                      rows="3">
+                  </textarea>
+              </div>
+              <button
+                  class="p-2 mt-3 ml-1 border-2 rounded text-pink-500 border-pink-500 hover:text-white hover:bg-pink-500"
+                  @click="addZakkuriItem()">
+                  反映
+              </button>
+              <template x-for="itibun in itibuns">
+                <div class="flex mb-4 text-gray-700 items-center">
+                  p.<p
+                    x-text="itibun.peji"
+                    class=""
+                  ></p>　
+                  <p
+                    x-text="itibun.text"
+                    class=""
+                  ></p>
+                </div>
+              </template>
+
+              <div class="text-xl">
+                  <div>⑤この章は要するにこういうことメモ記入欄</div>
+                  <textarea
+                      x-model="youha"
+                      class="mx-8 border rounded text-gray-700 w-full"
+                      rows="20">
+                  </textarea>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- 【きっかりモード】 -->
+  <div x-show="tab === 'tab2'" class="text-xl">
+      <div class="text-2xl mb-10">【きっかりモード】</span>
+      <div class="text-xl">〇〇この章は要するにこういうことメモ</div>
+      <div
+      x-text="youha"
+      class="w-full text-gray-700"
+      ></div>
+
+      <div class="text-xl">〇〇重要そうなキーワード・フレーズメモ</div>
+      <div class="flex flex-wrap gap-3 mx-8">
+        <div
+          x-html="checkKeywords()"
+          class="w-full border p-1 mb-3 border-gray-300 rounded text-gray-700"
+        ></div>
+      </div>  
+
+      <div class="text-xl">
+        <div>⑥きっかりメモ記入欄</div>
+        <textarea
+            x-model="kikkari"
+            class="mx-8 border rounded text-gray-700 w-full"
+            rows="20">
+        </textarea>
+      </div>
+        <div class="text-xl">〇〇自分的にココ好きかも…！？</div>
+        <div
+          x-text="suki"
+          class="w-full text-gray-700"
+        ></div>
+      </div>
+      <div>③なんでもメモ記入欄</div>a
+      <textarea
+          x-model="nandemo"
+          class="mx-8 border rounded text-gray-700 w-full"
+          rows="20">
+      </textarea>
+
+      <div class="text-xl">〇〇カッコいい一文メモ</div>
+      <template x-for="itibun in itibuns">
+        <div class="flex mb-4 text-gray-700 items-center">
+          p.<p
+            x-text="itibun.peji"
+            class=""
+          ></p>　
+          <p
+            x-text="itibun.text"
+            class=""
+          ></p>
+        </div>
+      </template>
+
+      <div class="text-xl">
+          <div>⑦俺に言わせると…メモ記入欄</div>
+          <textarea
+              x-model="oreni"
+              class="mx-8 border rounded text-gray-700 w-full"
+              rows="20">
+          </textarea>
+      </div>
+  </div>
+
+  <!-- 【実験メモモード】 -->
+  <div x-show="tab === 'tab3'" class="">
+      <div class="text-2xl mb-10">【実験メモモード】</div>
+        <div class="text-xl">きっかりメモ</div>
+        <div class="text-base">
+        <div
+          x-text="kikkari"
+          class="w-full text-gray-700"
+        ></div>
+        <div>⑧実験記入欄</div>
+        <input
+          x-model="jikkenpejiInput"
+          class="mx-8 border rounded text-gray-700 w-full">
+        </input>
+        <textarea
+            x-model="jikkenInput"
+            class="mx-8 mt-3 border rounded text-gray-700 w-full"
+            rows="20">
+        </textarea>
+      </div>
+
+
+        <template x-for="jikken in jikkens">
+          <div class="flex mb-4 ml-1 text-gray-700 text-base items-center">
+            p.<p
+              x-text="jikken.peji"
+              class=""
+            ></p>~　
+            <p
+              x-text="jikken.text"
+              class=""
+            ></p>
+          </div>
+        </template>
+        <button
+            class="mt-3 ml-1 p-2 border-2 rounded text-pink-500 border-pink-500 hover:text-white hover:bg-pink-500"
+            @click="addZakkuriItem()">
+            反映
+        </button>
+  </div>
+
+  <!-- 【完成モード】 -->
+  <div x-show="tab === 'tab4'" class="">
+      <div class="text-2xl mb-10">【完成モード】</span>
+        <div class="text-xl">【この章は要するにこういうことメモ】</div>
+        <div
+        x-text="youha"
+        class="w-full text-gray-700"
+        ></div>
+        <div class="text-xl">【俺に言わせれば…メモ】</div>
+        <div
+        x-text="oreni"
+        class="w-full text-gray-700"
+        ></div>
+        <div class="text-xl">【きっかりメモ】</div>
+        <div
+        x-text="kikkari"
+        class="w-full text-gray-700"
+        ></div>
+        <div class="text-xl">【カッコいい一文メモ】</div>
+        <template x-for="itibun in itibuns">
+          <div class="flex mb-4 text-gray-700 items-center">
+            p.<p
+              x-text="itibun.peji"
+              class=""
+            ></p>　
+            <p
+              x-text="itibun.text"
+              class=""
+            ></p>
+          </div>
+        </template>
+        <div class="text-xl">【実験メモ】</div>
+        <template x-for="jikken in jikkens">
+          <div class="flex mb-4 ml-1 text-gray-700 text-base items-center">
+            p.<p
+              x-text="jikken.peji"
+              class=""
+            ></p>~　
+            <p
+              x-text="jikken.text"
+              class=""
+            ></p>
+          </div>
+        </template>
+        <div class="text-xl">【なんでもメモ】</div>
+        <div
+        x-text="nandemo"
+        class="w-full text-gray-700"
+        ></div>
+      </div>
+  </div>
+
+  <!-- 【セーブモード】 -->
+  <div x-show="tab === 'tab5'" class="">
+      <span class="text-2xl mb-10">【セーブモード】</span>
+  </div>
+</div>
+</div>
+
+<script>
+const componentData = () => ({
+  // ざっくりモードの変数と配列
+  tab: 'tab1',
+  keywords: [],
+  keywordInput: '',
+  suki: '',
+  nandemo: '',
+  itibuns: [],
+  itibunInput: '',
+  itibunpejiInput: '',
+  youha: '',
+  // きっかりモードの変数
+  kikkari: '',
+  oreni: '',
+  // 実験モードの配列
+  jikkens: [],
+  jikkenInput: '',
+  jikkenpejiInput: '',
+
+  // ざっくりモードの保存ボタンを押したときのメソッド
+  addZakkuriItem() {
+      // キーワードメモ代入
+      this.keywords = this.keywordInput.split('・');
+      // 一文メモ代入
+      const itibun = {
+          text: this.itibunInput,
+          peji: this.itibunpejiInput
+      };
+      this.itibuns.push(itibun);
+      // 実験メモ代入
+      const jikken = {
+          text: this.jikkenInput,
+          peji: this.jikkenpejiInput
+      }
+      this.jikkens.push(jikken);
+      // インプットの中身を削除
+      this.itibunInput = '';
+      this.itibunpejiInput = '';
+      this.jikkenInput = '';
+      this.jikkenpejiInput = '';
+  },
+  // checkKeywords() {
+  //   this.keywords.forEach(keyword => {
+  //       // キーワードが存在する場合、文字の色を変更する
+  //       const regex = new RegExp(`(${keyword})`, 'g');
+  //       text = text.replace(regex, `<span class="border border-blue-300 text-blue-300">$1</span>`);
+  //   });
+  // },
+  checkKeywords() {
+    return this.keywords.map(keyword => {
+      const isInText = this.kikkari.includes(keyword);
+      const className = isInText ? 'text-blue-300 border-blue-300' : '';
+      return `<span class="border p-1 border-gray-300 rounded ${className}">${keyword}</span>`;
+    }).join(' ');
+  },
+});
+</script>
+</body>
+</html>
